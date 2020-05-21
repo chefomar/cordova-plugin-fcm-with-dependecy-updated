@@ -1,14 +1,9 @@
 #import <UIKit/UIKit.h>
 #import <Cordova/CDVPlugin.h>
 
-@interface FCMPlugin : CDVPlugin
-{
-    //NSString *notificationCallBack;
-}
+@interface FCMPlugin : CDVPlugin {}
 
 + (FCMPlugin *) fcmPlugin;
-+ (void)setInitialAPNSToken:(NSString*) token;
-+ (void)setInitialFCMToken:(NSString*) token;
 - (void)notifyFCMTokenRefresh:(NSString*) token;
 - (void)ready:(CDVInvokedUrlCommand*)command;
 - (void)hasPermission:(CDVInvokedUrlCommand*)command;
@@ -19,6 +14,7 @@
 - (void)unsubscribeFromTopic:(CDVInvokedUrlCommand*)command;
 - (void)registerNotification:(CDVInvokedUrlCommand*)command;
 - (void)notifyOfMessage:(NSData*) payload;
+- (void)runJS:(NSString *)jsCode;
 - (void)appEnterBackground;
 - (void)appEnterForeground;
 

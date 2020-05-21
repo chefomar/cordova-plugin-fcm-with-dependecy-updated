@@ -17,7 +17,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-fcm-with-dependecy-updated" version="4.4.1">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-fcm-with-dependecy-updated" version="6.4.0">
 	<name>Cordova FCM Push Plugin</name>
 	<description>Google Firebase Cloud Messaging Cordova Push Plugin fork with dependecy updated</description>
 	<license>MIT</license>
@@ -29,10 +29,10 @@
 
 	<engines>
 		<engine name="cordova-android" version=">=8.0.0" />
-		<engine name="cordova-ios" version=">=5.0.0" />
+		<engine name="cordova-ios" version=">=5.1.1" />
 	</engines>
 
-	<dependency id="cordova-plugin-firebase-analytics" version="~4.1.0"/>
+	<dependency id="cordova-plugin-firebase-analytics" version="~4.3.0"/>
 
 	<!-- ANDROID CONFIGURATION -->
 	<platform name="android">
@@ -70,6 +70,7 @@
 		<framework src="src/android/FCMPlugin.gradle" custom="true" type="gradleReference"/>
 
 		<source-file src="src/android/com/gae/scaffolder/plugin/FCMPlugin.java" target-dir="src/com/gae/scaffolder/plugin" />
+		<source-file src="src/android/com/gae/scaffolder/plugin/FCMPluginChannelCreator.java" target-dir="src/com/gae/scaffolder/plugin" />
 		<source-file src="src/android/com/gae/scaffolder/plugin/MyFirebaseMessagingService.java" target-dir="src/com/gae/scaffolder/plugin" />
 		<source-file src="src/android/com/gae/scaffolder/plugin/FCMPluginActivity.java" target-dir="src/com/gae/scaffolder/plugin" />
 		<source-file src="src/android/com/gae/scaffolder/plugin/interfaces/OnFinishedListener.java" target-dir="src/com/gae/scaffolder/plugin/interfaces" />
@@ -91,6 +92,14 @@
 		<config-file parent="aps-environment" target="*/Entitlements-Release.plist">
 			<string>production</string>
 		</config-file>
+		<config-file target="*-Info.plist" parent="UIBackgroundModes">
+			<array>
+				<string>remote-notification</string>
+			</array>
+		</config-file>
+		<config-file target="*-Info.plist" parent="FirebaseAppDelegateProxyEnabled">
+			<false/>
+		</config-file>
 
 		<header-file src="src/ios/FCMPlugin.h" />
 		<source-file src="src/ios/FCMPlugin.m" />
@@ -98,13 +107,16 @@
 		<header-file src="src/ios/AppDelegate+FCMPlugin.h" />
 		<source-file src="src/ios/AppDelegate+FCMPlugin.m" />
 
-		<!-- FIREBASE COCOA PODS-->
+		<header-file src="src/ios/FCMPluginIOS9Support.h" />
+		<source-file src="src/ios/FCMPluginIOS9Support.m" />
+
+		<!-- FIREBASE COCOAPODS-->
 		<podspec>
 			<config>
-				<source url="https://cdn.cocoapods.org/"/>
+                <source url="https://github.com/CocoaPods/Specs.git"/>
 			</config>
 			<pods>
-				<pod name="Firebase/Messaging" spec="~> 6.19.0" />
+				<pod name="Firebase/Messaging" spec="~> 6.23.0" />
 			</pods>
 		</podspec>
 
@@ -117,8 +129,8 @@
 		<framework src="Security.framework" />
 	</platform>
 
-	<!-- COPY FCM CONFIG FILES TO PLATFORM AFTER PLUGIN INSTALL OR PLATFORM PREPARE -->
-	<hook src="scripts/fcm_config_files_process.js" type="after_plugin_add" />
-	<hook src="scripts/fcm_config_files_process.js" type="after_prepare" />
-
+	<!-- COPY FCM CONFIG FILES TO PLATFORM BEFORE COMPILING -->
+	<hook src="scripts/copy_google_service_files.js" type="after_prepare" />
+	<hook src="scripts/copy_google_service_files.js" type="after_plugin_add" />
+	<hook src="scripts/cdnfy_podfile.js" type="before_plugin_install" />
 </plugin>
