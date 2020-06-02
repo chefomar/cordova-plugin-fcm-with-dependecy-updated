@@ -140,7 +140,6 @@ DESC
   spec.dependency "Cordova", ">= 3.0.0"
 
   # TODO: Migrate to use Core cocoapods Firebase dependencies
-  spec.dependency 'Firebase/Analytics', '~> 6.3.0'
   spec.dependency 'Firebase/Messaging', '~> 6.3.0'
 
 end
